@@ -1,1 +1,0 @@
-# Parham-Ahmadpanah.github.io
