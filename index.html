@@ -40,12 +40,26 @@
       line-height: 1.9;
       box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
-    .bold {
-      font-weight: bold; /* بولد کردن متن */
+    strong {
+      font-weight: bold;
+      color: #b4005a;
+    }
+    em {
+      font-style: italic;
+      color: #555;
+    }
+    a {
+      color: #d63384;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <h1>🤖 مشاور زیبایی هوشمند</h1>
 
@@ -68,9 +82,11 @@
         });
 
         const data = await res.json();
-        // در اینجا فرض می‌کنیم داده برگشتی شما شامل ستاره‌ها باشد
-        // به عنوان مثال:
-        answerEl.innerHTML = data.answer.replace(/\*/g, '<span class="bold">*</span>') || "❌ پاسخ یافت نشد.";
+        const htmlFormatted = (data.answer || "❌ پاسخ یافت نشد.")
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+        answerEl.innerHTML = htmlFormatted;
       } catch (err) {
         console.error(err);
         answerEl.innerHTML = "❌ مشکلی در ارتباط با سرور پیش آمد.";
