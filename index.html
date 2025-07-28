@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>مشاور آرایشی هوشمند</title>
+  <style>
+    body {
+      font-family: "Vazirmatn", sans-serif;
+      background-color: #f9f3f3;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      direction: rtl;
+    }
+    h1 {
+      color: #d63384;
+    }
+    input, button {
+      font-size: 1rem;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+    button {
+      background-color: #d63384;
+      color: white;
+      cursor: pointer;
+      margin-right: 1rem;
+    }
+    #answer {
+      margin-top: 2rem;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 600px;
+      line-height: 1.9;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 مشاور زیبایی هوشمند</h1>
+
+  <input id="question" placeholder="سوال خود را وارد کنید..." size="50" />
+  <button onclick="askConsultant()">بپرس</button>
+
+  <div id="answer"></div>
+
+  <script>
+    async function askConsultant() {
+      const question = document.getElementById("question").value;
+      const answerEl = document.getElementById("answer");
+      answerEl.innerHTML = "⏳ در حال پاسخ‌گویی...";
+
+      try {
+        const res = await fetch("https://backchatbot-1.onrender.com/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
+        });
+
+        const data = await res.json();
+        answerEl.innerHTML = data.answer || "❌ پاسخ یافت نشد.";
+      } catch (err) {
+        console.error(err);
+        answerEl.innerHTML = "❌ مشکلی در ارتباط با سرور پیش آمد.";
+      }
+    }
+  </script>
+</body>
+</html>
